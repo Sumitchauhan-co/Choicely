@@ -1,5 +1,9 @@
 {
     "name": "choicely",
+    "version": "1.0.0",
+    "scripts": {
+        "lint": "pnpm --filter frontend lint"
+    },
     "private": true,
     "devDependencies": {
         "@commitlint/config-conventional": "^21.0.1",
