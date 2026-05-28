@@ -1,0 +1,25 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Diagnostic reports
+report.[0-9]*
+
+# Dependency directories (Catches both folders)
+**/node_modules/
+
+# Production builds
+**/dist/
+**/.output/
+
+# Environment variables (Crucial for security!)
+**/.env
+**/.env.local
+**/.env.*.local
+
+# IDE and System files
+.vscode/
+.idea/
+.DS_Store
