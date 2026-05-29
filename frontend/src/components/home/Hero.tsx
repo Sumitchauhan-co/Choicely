@@ -79,12 +79,12 @@ export default function HeroSection() {
                         Create a Poll
                         <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </Link>
-                    <Link
+                    {/* <Link
                         to="/docs"
                         className="bg-card border-border text-foreground hover:bg-accent w-full rounded-full border px-8 py-3.5 text-center text-sm font-medium transition-colors sm:w-auto"
                     >
                         View Documentation
-                    </Link>
+                    </Link> */}
                 </motion.div>
             </div>
         </section>
