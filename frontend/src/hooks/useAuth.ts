@@ -20,6 +20,7 @@ export const authKeys = {
 export function useUser() {
     const { clearAuth, setAuthenticated } = useAuthStore();
 
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     return useQuery<User | null>({
         queryKey: authKeys.user,
         queryFn: async () => {
@@ -244,6 +245,91 @@ export function useContact() {
                 id: toastId,
                 description:
                     "Your contact details have successfully submitted.",
+                duration: 5000,
+                action: {
+                    label: "okay",
+                    onClick: () => {},
+                },
+            });
+        },
+    });
+}
+
+export function useForgotPassword() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: Record<string, string>) => {
+            const toastId = toast.loading("Sending...");
+
+            try {
+                await api.post("/api/auth/forgot-password", data);
+                return { toastId };
+            } catch (error) {
+                let errorMessage =
+                    "Failed to sent email. Please try again later.";
+                if (isAxiosError(error)) {
+                    errorMessage =
+                        error.response?.data?.message || errorMessage;
+                }
+
+                toast.error(errorMessage, { id: toastId });
+                throw new Error(errorMessage, { cause: error });
+            }
+        },
+        onSuccess: data => {
+            const toastId = data?.toastId;
+
+            queryClient.setQueryData(authKeys.user, null);
+            queryClient.removeQueries();
+
+            toast.success("Email sent successfully!", {
+                id: toastId,
+                description:
+                    "Url has been sent to your email to reset your password.",
+                duration: 5000,
+                action: {
+                    label: "okay",
+                    onClick: () => {},
+                },
+            });
+        },
+    });
+}
+
+export function useResetPassword() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (data: Record<string, string>) => {
+            const toastId = toast.loading("Submitting...");
+
+            try {
+                await api.post(
+                    `/api/auth/reset-password?token=${data.token}`,
+                    data
+                );
+                return { toastId };
+            } catch (error) {
+                let errorMessage = "Failed to submit. Please try again.";
+                if (isAxiosError(error)) {
+                    errorMessage =
+                        error.response?.data?.message || errorMessage;
+                }
+
+                toast.error(errorMessage, { id: toastId });
+                throw new Error(errorMessage, { cause: error });
+            }
+        },
+        onSuccess: data => {
+            const toastId = data?.toastId;
+
+            queryClient.setQueryData(authKeys.user, null);
+            queryClient.removeQueries();
+
+            toast.success("Password updated!", {
+                id: toastId,
+                description: "New password has been successfully updated.",
                 duration: 5000,
                 action: {
                     label: "okay",

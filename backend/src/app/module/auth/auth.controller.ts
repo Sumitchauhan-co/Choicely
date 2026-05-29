@@ -156,6 +156,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 
 const resetPassword = async (req: Request, res: Response) => {
     const { newPassword, confirmPassword } = req.body;
+
     const token = req.query.token as string;
 
     if (newPassword !== confirmPassword) {

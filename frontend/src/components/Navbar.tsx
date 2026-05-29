@@ -15,7 +15,6 @@ const navItems = [
     { name: "Home", to: "/" as const },
     { name: "Dashboard", to: "/dashboard" as const },
     { name: "Polls", to: "/poll" as const },
-    { name: "Docs", to: "/docs" as const },
     { name: "About", to: "/about" as const },
     { name: "Contact", to: "/contact" as const },
 ];

@@ -31,7 +31,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 md:p-0">
+        <section className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 md:p-0">
             <div className="bg-card text-card-foreground border-border grid min-h-[600px] w-full max-w-5xl grid-cols-1 overflow-hidden rounded-2xl border shadow-xl md:grid-cols-2">
                 {/* Left Form */}
                 <div className="flex w-full flex-col justify-between p-8">
@@ -323,6 +323,6 @@ export default function SignUp() {
                 {/* Right banner */}
                 <AuthBanner />
             </div>
-        </div>
+        </section>
     );
 }

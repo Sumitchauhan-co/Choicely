@@ -45,7 +45,7 @@ export default function DashboardPolls() {
     }
 
     return (
-        <div className="animate-in fade-in space-y-6 duration-200">
+        <section className="animate-in fade-in space-y-6 duration-200">
             <div>
                 <h2 className="text-xl font-bold tracking-tight">
                     Poll Configuration
@@ -104,7 +104,7 @@ export default function DashboardPolls() {
                     mutation={updatePollMutation}
                 />
             )}
-        </div>
+        </section>
     );
 }
 

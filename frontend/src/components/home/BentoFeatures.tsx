@@ -66,8 +66,8 @@ export default function BentoFeaturesSection() {
                         Infrastructure Ecosystem
                     </div>
                     <div className="flex flex-col gap-4 sm:gap-6">
-                        <h2 className="text-foreground/90 font-sans text-3xl font-black tracking-tight md:text-4xl">
-                            Engineered for High-Fidelity Decisions
+                        <h2 className="text-foreground/90 font-sans text-3xl font-black tracking-tight md:text-5xl">
+                            Architecture For Every Choice
                         </h2>
                         <p className="text-muted-foreground/80 mx-auto max-w-lg text-sm font-medium sm:text-[1rem]">
                             Choiceley unifies real-time interactive mapping data

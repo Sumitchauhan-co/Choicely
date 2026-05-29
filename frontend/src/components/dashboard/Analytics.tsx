@@ -135,7 +135,7 @@ export default function AnalyticsView() {
     };
 
     return (
-        <div className="animate-in fade-in w-full space-y-6 duration-200">
+        <section className="animate-in fade-in w-full space-y-6 duration-200">
             {/* Invisible tracking layer to safely invoke custom hooks for each entity */}
             {myPolls?.map(poll => (
                 <LivePollTracker
@@ -364,7 +364,7 @@ export default function AnalyticsView() {
                     </CardContent>
                 </Card>
             </div>
-        </div>
+        </section>
     );
 }
 

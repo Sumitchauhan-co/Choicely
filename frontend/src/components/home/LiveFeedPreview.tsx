@@ -101,10 +101,10 @@ export default function LiveFeedPreview() {
                         Live Active Stream
                     </div>
                     <h2 className="text-foreground/90 font-sans text-3xl leading-none font-black tracking-tight sm:text-4xl lg:text-5xl">
-                        Zero Static Content.
+                        Precision Live Telemetry.
                         <br />
                         <span className="from-foreground via-foreground/80 to-muted-foreground bg-gradient-to-r bg-clip-text text-transparent">
-                            Pure Live Telemetry.
+                            Synced To Every Choice.
                         </span>
                     </h2>
                     <p className="text-muted-foreground/80 text-sm leading-relaxed font-medium md:text-base">

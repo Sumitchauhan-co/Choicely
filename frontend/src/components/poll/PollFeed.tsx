@@ -42,7 +42,7 @@ export default function PollFeed() {
     const totalItems = pagination?.totalItems ?? 0;
 
     return (
-        <div className="bg-background text-foreground selection:bg-primary/10 min-h-screen px-4 py-12 antialiased sm:px-6">
+        <section className="bg-background text-foreground selection:bg-primary/10 min-h-screen px-4 py-12 antialiased sm:px-6">
             <div className="mx-auto max-w-2xl space-y-6">
                 {/* Header Row */}
                 <div className="border-border/50 flex items-center justify-between border-b pb-5">
@@ -200,6 +200,6 @@ export default function PollFeed() {
                     </div>
                 )}
             </div>
-        </div>
+        </section>
     );
 }

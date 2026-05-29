@@ -90,7 +90,7 @@ export default function LivePoll() {
     }
 
     return (
-        <div className="bg-background text-foreground min-h-screen px-4 py-12 antialiased sm:px-6">
+        <section className="bg-background text-foreground min-h-screen px-4 py-12 antialiased sm:px-6">
             <div className="mx-auto max-w-xl space-y-6">
                 {/* Back Navigation Bar */}
                 <Link
@@ -225,6 +225,6 @@ export default function LivePoll() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }

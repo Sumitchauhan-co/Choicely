@@ -79,7 +79,7 @@ function DashboardContent() {
     const shouldShowProfile = isMobile || !open;
 
     return (
-        <div className="bg-background text-foreground selection:bg-primary/10 flex min-h-screen w-full antialiased">
+        <section className="bg-background text-foreground selection:bg-primary/10 flex min-h-screen w-full antialiased">
             <DashboardSidebar
                 currentView={currentView}
                 onViewChange={handleViewChange}
@@ -178,7 +178,7 @@ function DashboardContent() {
                     {currentView === "analytics" ? <Analytics /> : <Polls />}
                 </main>
             </div>
-        </div>
+        </section>
     );
 }
 

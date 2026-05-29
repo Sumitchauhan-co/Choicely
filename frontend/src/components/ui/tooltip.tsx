@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Tooltip as TooltipPrimitive } from "radix-ui"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip" // 🔌 Fixed scoped Radix package import
 
 import { cn } from "@/lib/utils"
 
@@ -32,7 +32,7 @@ function TooltipTrigger({
 
 function TooltipContent({
   className,
-  sideOffset = 0,
+  sideOffset = 4, // Raised offset slightly to account for the clean structural arrow spacing
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
@@ -48,7 +48,8 @@ function TooltipContent({
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground" />
+        {/* 🏹 Cleaned up Arrow container to rely safely on Tailwind CSS theme colors */}
+        <TooltipPrimitive.Arrow className="fill-foreground size-2.5" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   )

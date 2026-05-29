@@ -1,35 +1,36 @@
 "use client";
-import React from "react";
 
 import { Link } from "@tanstack/react-router";
 import { Blocks } from "lucide-react";
 
 const footerLinks = [
-    {
-        title: "Pages",
-        links: [
-            { name: "All Products", to: "/products" as const },
-            { name: "Studio", to: "/studio" as const },
-            { name: "Clients", to: "/clients" as const },
-            { name: "Pricing", to: "/pricing" as const },
-            { name: "Blog", to: "/blog" as const },
-        ],
-    },
+    // {
+    //     title: "Pages",
+    //     links: [
+    //         { name: "All Products", to: "/products" as const },
+    //         { name: "Studio", to: "/studio" as const },
+    //         { name: "Clients", to: "/clients" as const },
+    //         { name: "Pricing", to: "/pricing" as const },
+    //         { name: "Blog", to: "/blog" as const },
+    //     ],
+    // },
     {
         title: "Socials",
         links: [
-            { name: "Facebook", to: "#" },
-            { name: "Instagram", to: "#" },
-            { name: "Twitter", to: "#" },
-            { name: "LinkedIn", to: "#" },
+            { name: "Github", to: "https://github.com/Sumitchauhan-co" },
+            { name: "X", to: "https://x.com/SUMITCH433" },
+            {
+                name: "LinkedIn",
+                to: "https://www.linkedin.com/in/sumit-chauhan-10679a384?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+            },
         ],
     },
     {
         title: "Legal",
         links: [
-            { name: "Privacy Policy", to: "/privacy" as const },
-            { name: "Terms of Service", to: "/terms" as const },
-            { name: "Cookie Policy", to: "/cookies" as const },
+            { name: "Privacy Policy", to: "/about" as const },
+            { name: "Terms of Service", to: "/about" as const },
+            { name: "Cookie Policy", to: "/about" as const },
         ],
     },
     {

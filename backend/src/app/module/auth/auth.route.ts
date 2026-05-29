@@ -20,7 +20,7 @@ router.get("/profile/:id", authController.profile);
 
 router.post(
     "/forgot-password",
-    forgotPasswordLimiter,
+    // forgotPasswordLimiter,
     authController.forgotPassword,
 );
 

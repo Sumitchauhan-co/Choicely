@@ -44,11 +44,8 @@ function AppContent() {
 
     if (isLoading) {
         return (
-            <div className="flex h-screen w-screen flex-col items-center justify-center bg-zinc-950 text-zinc-50">
+            <div className="bg-background text-foreground flex h-screen w-screen flex-col items-center justify-center">
                 <LoadingAnimation />
-                <p className="animate-pulse text-xs font-medium tracking-wide text-zinc-400">
-                    Syncing secure gateway session...
-                </p>
             </div>
         );
     }

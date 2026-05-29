@@ -1,13 +1,21 @@
 "use client";
 
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { useMotionValue, motion, useMotionTemplate } from "motion/react";
-import React, {
-    type MouseEvent as ReactMouseEvent,
-    useState,
-    useEffect,
-} from "react";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { cn } from "@/lib/utils";
+
+// Lazy load the heavy CanvasRevealEffect to keep the main bundle light
+const CanvasRevealEffect = lazy(() => 
+    import("@/components/ui/canvas-reveal-effect").then((m) => ({ 
+        default: m.CanvasRevealEffect 
+    }))
+);
+
+interface CardSpotlightProps extends React.HTMLAttributes<HTMLDivElement> {
+    radius?: number;
+    color?: string;
+    children?: React.ReactNode;
+}
 
 export const CardSpotlight = ({
     children,
@@ -15,19 +23,11 @@ export const CardSpotlight = ({
     color,
     className,
     ...props
-}: {
-    radius?: number;
-    color?: string;
-    children: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>) => {
+}: CardSpotlightProps) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-
-    const [isDark, setIsDark] = useState(() =>
-        typeof document !== "undefined"
-            ? document.documentElement.classList.contains("dark")
-            : false,
-    );
+    const [isDark, setIsDark] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
 
     useEffect(() => {
         const checkTheme = () => {
@@ -49,29 +49,22 @@ export const CardSpotlight = ({
         currentTarget,
         clientX,
         clientY,
-    }: ReactMouseEvent<HTMLDivElement>) {
+    }: React.MouseEvent<HTMLDivElement>) {
         const { left, top } = currentTarget.getBoundingClientRect();
-
         mouseX.set(clientX - left);
         mouseY.set(clientY - top);
     }
 
-    const [isHovering, setIsHovering] = useState(false);
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
-
     const lightModeGradient = useMotionTemplate`radial-gradient(${radius}px circle at ${mouseX}px ${mouseY}px, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 1) 85%, rgba(255, 255, 255, 1) 100%)`;
-
-    const dynamicBackground =
-        color ?? (isDark ? "#262626" : lightModeGradient);
+    const dynamicBackground = color ?? (isDark ? "#262626" : lightModeGradient);
 
     const dynamicMaskImage = useMotionTemplate`
-    radial-gradient(
-      ${radius}px circle at ${mouseX}px ${mouseY}px,
-      white 0%,
-      transparent 80%
-    )
-  `;
+        radial-gradient(
+          ${radius}px circle at ${mouseX}px ${mouseY}px,
+          white 0%,
+          transparent 80%
+        )
+    `;
 
     return (
         <div
@@ -82,40 +75,32 @@ export const CardSpotlight = ({
                 className,
             )}
             onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
             {...props}
         >
             <motion.div
                 className="pointer-events-none absolute z-0 -inset-px rounded-md opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
                 style={{
-                    backgroundImage: isDark
-                        ? undefined
-                        : (dynamicBackground as string),
-                    backgroundColor: isDark
-                        ? (dynamicBackground as string)
-                        : undefined,
+                    backgroundImage: isDark ? undefined : (dynamicBackground as any),
+                    backgroundColor: isDark ? (dynamicBackground as any) : undefined,
                     maskImage: dynamicMaskImage,
                     WebkitMaskImage: dynamicMaskImage,
                 }}
             >
                 {isHovering && (
-                    <CanvasRevealEffect
-                        animationSpeed={5}
-                        containerClassName="bg-transparent absolute inset-0 pointer-events-none"
-                        colors={
-                            isDark
-                                ? [
-                                      [59, 130, 246],
-                                      [139, 92, 246],
-                                  ]
-                                : [
-                                      [245, 158, 11],
-                                      [234, 179, 8],
-                                  ]
-                        }
-                        dotSize={3}
-                    />
+                    <Suspense fallback={null}>
+                        <CanvasRevealEffect
+                            animationSpeed={5}
+                            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+                            colors={
+                                isDark
+                                    ? [[59, 130, 246], [139, 92, 246]]
+                                    : [[245, 158, 11], [234, 179, 8]]
+                            }
+                            dotSize={3}
+                        />
+                    </Suspense>
                 )}
             </motion.div>
             <div className="relative z-10">{children}</div>

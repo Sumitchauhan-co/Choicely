@@ -101,7 +101,7 @@ export default function CreatePoll() {
     });
 
     return (
-        <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 md:p-8">
+        <section className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4 md:p-8">
             <div className="bg-card text-card-foreground border-border w-full max-w-2xl space-y-6 rounded-2xl border p-6 shadow-xl md:p-8">
                 <div className="border-border flex items-center gap-3 border-b pb-4">
                     <div className="bg-primary/10 text-primary rounded-xl p-2.5">
@@ -639,6 +639,6 @@ export default function CreatePoll() {
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
     );
 }

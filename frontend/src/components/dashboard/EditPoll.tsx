@@ -70,7 +70,7 @@ export default function EditPollModal({
     };
 
     return (
-        <div className="bg-background/80 animate-in fade-in fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xs duration-100">
+        <section className="bg-background/80 animate-in fade-in fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-xs duration-100">
             <div className="bg-card animate-in scale-in-95 scrollbar-none relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl border p-6 shadow-xl duration-150">
                 <button
                     title="close"
@@ -220,6 +220,6 @@ export default function EditPollModal({
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
     );
 }

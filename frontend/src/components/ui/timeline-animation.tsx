@@ -1,3 +1,5 @@
+"use client";
+
 import type { Variants } from 'motion/react';
 import { type HTMLMotionProps, motion, useInView } from 'motion/react';
 import type React from 'react';
@@ -45,16 +47,18 @@ export const TimelineAnimation = <T extends keyof HTMLElementTagNameMap = 'div'>
     once,
   });
 
-  const MotionComponent = motion[as || 'div'] as React.ElementType;
+  //  Use motion.create dynamically to keep Framer Motion's strict typing intact
+  const Component = as || 'div';
+  const MotionComponent = motion.create(Component);
 
   return (
     <MotionComponent
-      initial='hidden'
+      initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       custom={animationNum}
       variants={sequenceVariants}
       className={className}
-      {...props}
+      {...(props as any)} // Cast props to bypass mismatched HTML attribute intersections safely
     >
       {children}
     </MotionComponent>

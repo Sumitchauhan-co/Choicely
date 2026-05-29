@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { ArrowRight, Sparkles, HelpCircle, Layers } from "lucide-react";
+import { ArrowRight, Sparkles, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion"; // Upgraded to standard framework namespace import
 import { cn } from "@/lib/utils";
 import { TimelineAnimation } from "@/components/ui/timeline-animation";
@@ -8,7 +8,7 @@ interface FAQItem {
     id: string;
     question: string;
     answer: string;
-    category: "general" | "technical" | "billing" | "account";
+    category: "general" | "technical" | "billing" | "account" | "legal";
     img: string;
 }
 
@@ -17,14 +17,14 @@ const FAQ_DATA: FAQItem[] = [
         id: "g1",
         category: "general",
         question: "What is this platform about?",
-        answer: "Choicely is a premium, interactive polling and audience engagement platform designed to capture real-time opinions through beautiful, dynamic visual interfaces. Whether you are conducting simple market pulse checks, driving audience participation during a live presentation, or analyzing complex user feedback, Choicely turns static surveys into conversational, high-converting visual media layouts. It is built to bridge the gap between crowd insight and actionable product data.",
+        answer: "Choicely is a premium, real-time polling platform designed to capture audience insights through interactive visual interfaces. It seamlessly transforms static data collection into dynamic, conversational layouts for presentations, feedback, and market research.",
         img: "https://images.unsplash.com/photo-1768280511074-3b3effe7a139?q=80&w=764&auto=format&fit=crop",
     },
     {
         id: "g2",
         category: "general",
         question: "How do I get started?",
-        answer: "Getting started with Choicely is completely streamlined. Once you sign in to your dashboard, you can launch a real-time poll in three quick steps. First, click the new poll button in your dashboard to start a clean question block. Second, type out your question and fill in your polling choice fields. Third, copy your poll's unique live link or embed snippet to share it with your audience. Votes will begin streaming back into your dashboard analytics instantly.",
+        answer: "Sign in to your dashboard, create a new question block with your custom choice fields, and launch the poll instantly. You can immediately copy the unique live link or embed snippet to collect and track streaming real-time analytics.",
         img: "https://images.unsplash.com/photo-1759269834957-3457c9ee46c7?q=80&w=627&auto=format&fit=crop",
     },
     {
@@ -38,7 +38,7 @@ const FAQ_DATA: FAQItem[] = [
         id: "t2",
         category: "technical",
         question: "What technologies are used?",
-        answer: "Choicely is built using React with TypeScript and Vite on the frontend, styled with Tailwind CSS using shadcn/ui and acertenity components. The application architecture uses TanStack Router for navigation, TanStack Forms for state validation, Zustand for global client state, and TanStack Query for server data fetching. The backend runs on Express with TypeScript, utilizing a PostgreSQL database for structured data management and Socket.io to stream live polling results in real time.",
+        answer: "The frontend leverages React, TypeScript, Vite, Tailwind CSS, and Zustand, with TanStack tools handling routing, forms, and queries. The backend is driven by Express, PostgreSQL, and Socket.io to stream real-time polling analytics flawlessly.",
         img: "https://images.unsplash.com/photo-1738510992679-41f599ec9399?q=80&w=627&auto=format&fit=crop",
     },
     // {
@@ -69,6 +69,27 @@ const FAQ_DATA: FAQItem[] = [
     //     answer: "Sharing individual accounts is against our terms of service parameters. We offer dedicated collaborative team plans for multi-user seats.",
     //     img: "https://images.unsplash.com/photo-1667776384514-a06f0b7675a1?q=80&w=764&auto=format&fit=crop",
     // },
+    {
+        id: "p1",
+        category: "legal",
+        question: "What is your Privacy Policy regarding user data?",
+        answer: "We collect minimal metadata via secure OAuth or email verification solely to manage account access. Choicely enforces strict encryption standards and never sells or trades personal info, polling questions, or voter telemetry.",
+        img: "https://images.unsplash.com/photo-1667776384514-a06f0b7675a1?q=80&w=764&auto=format&fit=crop",
+    },
+    {
+        id: "p2",
+        category: "legal",
+        question: "How are cookies used on the platform?",
+        answer: "We utilize secure, encrypted session cookies ('connect.sid') exclusively to maintain your authenticated state across page requests. The platform does not deploy intrusive, third-party cross-site tracking or advertising cookies.",
+        img: "https://images.unsplash.com/photo-1703600091728-8d0a2bf13396?q=80&w=711&auto=format&fit=crop",
+    },
+    {
+        id: "p3",
+        category: "legal",
+        question: "What are the Terms of Service for hosting polls?",
+        answer: "Users are required to deploy interactive workspaces responsibly. Generating deceptive, malicious, or phishing poll content is strictly prohibited and will result in immediate account termination and database isolation.",
+        img: "https://images.unsplash.com/photo-1688909906484-738d78601884?q=80&w=764&auto=format&fit=crop",
+    }
 ];
 
 type CategoryType = "all" | FAQItem["category"];
@@ -124,6 +145,7 @@ export const FaqInteractivePreview = () => {
                             "general",
                             "technical",
                             "account",
+                            "legal"
                         ] as CategoryType[]
                     ).map((cat) => (
                         <button
