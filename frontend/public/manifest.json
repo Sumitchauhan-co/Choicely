@@ -4,11 +4,16 @@
   "theme_color": "#000000",
   "background_color": "#000000",
   "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/app-icon.svg",
-      "sizes": "any",
+      "sizes": "192x192 512x512",
       "type": "image/svg+xml"
     }
+  ],
+  "scope_extensions": [
+    { "origin": "https://accounts.google.com" }
   ]
 }

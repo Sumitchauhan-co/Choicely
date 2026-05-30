@@ -24,7 +24,7 @@ export default function SignIn() {
     const oauthTriggerURL = `${import.meta.env.VITE_API_URL}/auth/google`;
 
     const handleOAuth = () => {
-        window.location.href = oauthTriggerURL;
+        window.open(oauthTriggerURL, "_blank");
     };
 
     return (
