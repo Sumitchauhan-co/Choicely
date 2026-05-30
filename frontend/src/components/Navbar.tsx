@@ -38,7 +38,7 @@ export default function Navbar() {
     };
 
     return (
-        <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-4 py-4">
+        <header className="sticky top-0 z-50 mx-auto w-full max-w-7xl px-4 py-2">
             {/* Main Navbar Capsule Container */}
             <nav className="bg-card text-card-foreground border-border relative z-50 flex w-full items-center justify-between rounded-full border px-4 py-2.5 shadow-md transition-colors duration-200 md:px-6">
                 {/* Left: Brand Logo */}

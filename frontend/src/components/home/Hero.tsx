@@ -11,7 +11,7 @@ export default function HeroSection() {
     const words = ["audiences", "ecosystems", "networks", "platforms"];
 
     return (
-        <section className="bg-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden pt-24 pb-16 transition-colors duration-200">
+        <section className="bg-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden pt-18 pb-16 transition-colors duration-200 sm:pt-24 sm:pb-12">
             {/* Background elements */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
                 <Spotlight
@@ -44,7 +44,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="text-foreground flex max-w-4xl flex-col items-center justify-center text-2xl leading-[1.2] font-semibold tracking-tighter sm:text-3xl md:text-4xl md:leading-[1.1] lg:text-5xl"
+                    className="text-foreground flex max-w-4xl flex-col items-center justify-center gap-2 text-2xl leading-[1.2] font-semibold tracking-tighter sm:gap-0 sm:text-3xl md:text-4xl md:leading-[1.1] lg:text-5xl"
                 >
                     <span className="text-foreground">
                         Instant real-time voting built for modern
@@ -70,7 +70,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
-                    className="flex w-full flex-col items-center gap-3.5 px-4 pt-4 sm:w-auto sm:flex-row sm:px-0"
+                    className="flex w-full flex-col items-center px-4 pt-4 sm:w-auto sm:flex-row sm:px-0"
                 >
                     <Link
                         to="/poll/create"
