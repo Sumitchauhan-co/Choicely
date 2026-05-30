@@ -106,7 +106,7 @@ export default function Footer() {
 
             {/* brand name */}
             <div className="pointer-events-none absolute bottom-0 left-1/2 z-0 flex h-fit w-full -translate-x-1/2 translate-y-4 items-center justify-center overflow-hidden select-none sm:translate-y-8 md:translate-y-12">
-                <h1 className="text-foreground transform-gpu text-[7rem] leading-none font-black tracking-tighter whitespace-nowrap opacity-[0.03] select-none sm:text-[10rem] md:text-[13rem] lg:text-[17rem] xl:text-[21rem]">
+                <h1 className="text-foreground transform-gpu text-[6rem] leading-none font-black tracking-tighter whitespace-nowrap opacity-[0.03] select-none sm:text-[10rem] md:text-[13rem] lg:text-[17rem] xl:text-[21rem]">
                     Choicely
                 </h1>
             </div>

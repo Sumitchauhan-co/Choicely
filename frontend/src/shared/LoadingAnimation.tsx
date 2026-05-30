@@ -39,7 +39,7 @@ export function LoadingAnimation() {
     };
 
     return (
-        <div className="bg-background text-foreground relative flex items-center justify-center p-6 select-none">
+        <div className="text-foreground relative flex items-center justify-center bg-transparent p-6 select-none">
             <motion.div
                 animate={{
                     opacity: [0.3, 0.5, 0.3],

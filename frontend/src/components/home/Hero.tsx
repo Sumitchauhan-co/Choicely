@@ -11,7 +11,7 @@ export default function HeroSection() {
     const words = ["audiences", "ecosystems", "networks", "platforms"];
 
     return (
-        <section className="bg-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden pt-18 pb-16 transition-colors duration-200 sm:pt-24 sm:pb-12">
+        <section className="bg-background relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden pt-12 pb-12 transition-colors duration-200 sm:pt-24 sm:pb-16">
             {/* Background elements */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
                 <Spotlight
