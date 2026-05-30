@@ -1,8 +1,13 @@
 import { Server } from "socket.io";
 import app from "./app/module/app.js";
 import "dotenv/config";
+import dotenvExpand from "dotenv-expand";
 import { createServer } from "node:http";
 import { broadcastPollMetrics } from "./app/module/poll/utils/pollService.js";
+import { configDotenv } from "dotenv";
+
+const myEnv = configDotenv();
+dotenvExpand.expand(myEnv);
 
 const PORT = process.env.PORT || 8000;
 

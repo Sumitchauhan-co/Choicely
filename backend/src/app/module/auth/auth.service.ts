@@ -1,4 +1,4 @@
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, gt, or, sql } from "drizzle-orm";
 import { db } from "../../common/db/index.js";
 import {
     contactTable,
@@ -17,6 +17,61 @@ import {
 } from "./utils/token.js";
 import nodemailer from "nodemailer";
 import { transporter } from "./utils/mail.js";
+
+export const handleGoogleOauthUserService = async ({
+    authId,
+    email,
+    firstName,
+    lastName,
+}: {
+    authId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}) => {
+    const existingUsers = await db
+        .select()
+        .from(usersTable)
+        .where(or(eq(usersTable.authId, authId), eq(usersTable.email, email)))
+        .limit(1);
+
+    let user = existingUsers[0];
+
+    if (!user) {
+        const insertedUsers = await db
+            .insert(usersTable)
+            .values({
+                authId,
+                email,
+                firstName,
+                lastName,
+                password: "",
+            })
+            .returning();
+
+        user = insertedUsers[0];
+    } else if (!user.authId) {
+        const updatedUsers = await db
+            .update(usersTable)
+            .set({ authId })
+            .where(eq(usersTable.id, user.id))
+            .returning();
+
+        user = updatedUsers[0];
+    }
+
+    return user;
+};
+
+export const findUserByIdService = async (id: string) => {
+    const users = await db
+        .select()
+        .from(usersTable)
+        .where(eq(usersTable.id, id))
+        .limit(1);
+
+    return users[0] || null;
+};
 
 export const signupService = async ({
     firstName,

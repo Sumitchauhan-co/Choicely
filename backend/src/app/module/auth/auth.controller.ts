@@ -1,8 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
 import {
     contactService,
+    findUserByIdService,
     forgotPasswordService,
     getUserService,
+    handleGoogleOauthUserService,
     profileService,
     refreshService,
     resetPasswordService,
@@ -14,11 +16,47 @@ import {
 import apiResponse from "../../common/utils/apiResponse.js";
 import apiError from "../../common/utils/apiError.js";
 import type { CookieOptions } from "express";
+import type { Profile } from "passport-google-oauth20";
 
 const cookieOptions: CookieOptions = {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
+};
+
+const handleGoogleOauthUser = async (profile: Profile) => {
+    if (!profile.id || !profile.emails?.[0]?.value) {
+        throw apiError.internal(
+            "Incomplete account metadata received from Google provider registry.",
+        );
+    }
+
+    const email = profile.emails[0].value;
+    const authId = profile.id;
+    const firstName = profile.name?.givenName || profile.displayName || "User";
+    const lastName = profile.name?.familyName || "";
+    const user = await handleGoogleOauthUserService({
+        authId,
+        email,
+        firstName,
+        lastName,
+    });
+
+    if (!user) {
+        throw apiError.notFound("User not found");
+    }
+
+    return user;
+};
+
+const findUserById = async (id: string) => {
+    const user = await findUserByIdService(id);
+
+    if (!user) {
+        throw apiError.notFound("User not found");
+    }
+
+    return user;
 };
 
 const signup = async (req: Request, res: Response) => {
@@ -219,6 +257,8 @@ const contact = async (req: Request, res: Response) => {
 };
 
 export default {
+    handleGoogleOauthUser,
+    findUserById,
     getUser,
     signup,
     signin,
