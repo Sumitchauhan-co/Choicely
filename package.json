@@ -1,21 +1,22 @@
 {
-    "name": "choicely",
-    "version": "1.0.0",
-    "scripts": {
-        "lint": "pnpm --filter frontend lint"
-    },
-    "private": true,
-    "devDependencies": {
-        "@commitlint/config-conventional": "^21.0.1",
-        "husky": "^9.1.7",
-        "lint-staged": "^17.0.5"
-    },
-    "lint-staged": {
-        "frontend/**/*.{js,jsx,ts,tsx,json,css,md}": [
-            "pnpm --filter frontend exec prettier --write"
-        ],
-        "frontend/**/*.{js,jsx,ts,tsx}": [
-            "pnpm --filter frontend exec eslint --no-warn-ignored"
-        ]
-    }
+  "name": "choicely",
+  "version": "1.0.0",
+  "scripts": {
+    "lint": "pnpm --filter frontend lint",
+    "prepare": "husky"
+  },
+  "private": true,
+  "devDependencies": {
+    "@commitlint/config-conventional": "^21.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "pnpm --filter frontend exec prettier --write"
+    ],
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "pnpm --filter frontend exec eslint --no-warn-ignored"
+    ]
+  }
 }

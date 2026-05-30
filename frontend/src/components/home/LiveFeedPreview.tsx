@@ -140,15 +140,16 @@ export default function LiveFeedPreview() {
                                     key={poll.id}
                                     className="group bg-card/20 border-border/50 hover:border-primary/30 hover:bg-card/40 flex flex-col space-y-4 rounded-2xl border p-5 shadow-xs backdrop-blur-xs transition-all duration-300 hover:shadow-[0_0_30px_-15px_rgba(0,0,0,0.3)]"
                                 >
-                                    <div className="flex items-center justify-between gap-3 text-xs">
-                                        <div className="flex max-w-[60%] items-center gap-2.5 sm:max-w-[65%]">
-                                            <div className="bg-primary/10 text-primary border-primary/20 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold uppercase select-none">
-                                                {poll.initials}
+                                    <div className="items-between flex justify-between gap-3 text-xs">
+                                        <div className="flex flex-wrap items-center gap-2.5">
+                                            <div className="flex items-center justify-center gap-2">
+                                                <div className="bg-primary/10 text-primary border-primary/20 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold uppercase select-none">
+                                                    {poll.initials}
+                                                </div>
+                                                <span className="text-foreground/70 group-hover:text-foreground max-w-[90px] truncate font-semibold transition-colors sm:max-w-[130px]">
+                                                    {poll.creator}
+                                                </span>
                                             </div>
-                                            <span className="text-foreground/70 group-hover:text-foreground max-w-[90px] truncate font-semibold transition-colors sm:max-w-[130px]">
-                                                {poll.creator}
-                                            </span>
-
                                             {/* Styled Unique Poll Name Identifier tag block */}
                                             {poll.name && (
                                                 <div className="bg-secondary text-secondary-foreground border-border/60 inline-flex max-w-[90px] shrink-0 items-center gap-1 rounded-md border px-2 py-0.5 select-none sm:max-w-[120px]">
@@ -160,7 +161,7 @@ export default function LiveFeedPreview() {
                                             )}
                                         </div>
 
-                                        <div className="flex shrink-0 gap-3 sm:gap-4">
+                                        <div className="flex flex-wrap justify-end gap-3 sm:gap-4">
                                             <div className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/15 bg-emerald-500/5 px-2.5 py-1.5 font-mono text-xs font-bold text-emerald-600 tabular-nums shadow-2xs transition-colors group-hover:border-emerald-500/20 group-hover:bg-emerald-500/10 dark:text-emerald-400">
                                                 <span className="relative flex h-1.5 w-1.5">
                                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
