@@ -148,7 +148,7 @@ export function DashboardSidebar({
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent
-                        side="right"
+                        side={`${isMobile ? "top" : "right"}`}
                         align="end"
                         sideOffset={12}
                         className="border-border/80 bg-popover/95 animate-in fade-in-50 slide-in-from-bottom-1 w-56 rounded-xl shadow-md backdrop-blur-md duration-150"

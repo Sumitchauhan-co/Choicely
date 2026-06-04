@@ -1,5 +1,5 @@
-import { Link, Navigate, useNavigate, useSearch } from "@tanstack/react-router";
-import { LogOut, Loader2, LogIn, Blocks } from "lucide-react";
+import { Navigate, useNavigate, useSearch } from "@tanstack/react-router";
+import { LogOut, Loader2, LogIn } from "lucide-react";
 
 import Analytics from "./Analytics";
 import Polls from "./DashboardPolls";
@@ -88,17 +88,6 @@ function DashboardContent() {
             <div className="flex min-w-0 flex-1 flex-col">
                 <header className="bg-background/80 sticky top-0 z-20 flex h-16 items-center justify-between border-b px-4 shadow-2xs backdrop-blur-md md:px-8">
                     <div className="flex items-center gap-4">
-                        {shouldShowProfile && (
-                            <Link
-                                to="/"
-                                className="flex cursor-pointer items-center justify-center gap-4 dark:text-white"
-                            >
-                                <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-900 shadow-xs dark:border-zinc-800 dark:bg-white dark:text-zinc-50">
-                                    <Blocks className="h-5 w-5 stroke-[2.2]" />
-                                </div>
-                                <div className="bg-border h-4 w-px shrink-0" />
-                            </Link>
-                        )}
                         <SidebarTrigger className="border-border/60 hover:bg-muted h-9 w-9 cursor-pointer rounded-xl border transition-colors dark:hover:bg-zinc-900" />
                         <div className="bg-border hidden h-4 w-px shrink-0 sm:block" />
                         <div className="min-w-0">

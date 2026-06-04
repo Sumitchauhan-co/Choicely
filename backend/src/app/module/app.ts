@@ -129,7 +129,9 @@ app.get(
 );
 app.get(
     '/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/api/auth/signin' }),
+    passport.authenticate('google', {
+        failureRedirect: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/signin`,
+    }),
     (_req, res) => {
         const targetRedirect =
             process.env.FRONTEND_URL || 'http://localhost:5173';
