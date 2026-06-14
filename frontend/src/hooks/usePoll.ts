@@ -258,6 +258,7 @@ export function usePollSocket(pollId: string) {
     const socketRef = useRef<Socket | null>(null);
     const [liveMetrics, setLiveMetrics] = useState<SocketPayload | null>(null);
     const [isConnected, setIsConnected] = useState(false);
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         if (!pollId) return;
@@ -273,6 +274,10 @@ export function usePollSocket(pollId: string) {
             console.log("⚡ Connected to real-time sync engine");
             setIsConnected(true);
             socketInstance.emit("join_poll", pollId);
+
+            queryClient.invalidateQueries({
+                queryKey: pollKeys.detail(pollId),
+            });
         });
 
         socketInstance.on("disconnect", reason => {
@@ -302,7 +307,7 @@ export function usePollSocket(pollId: string) {
             socketRef.current = null;
             setIsConnected(false);
         };
-    }, [pollId]);
+    }, [pollId, queryClient]);
 
     return { liveMetrics, isConnected };
 }
