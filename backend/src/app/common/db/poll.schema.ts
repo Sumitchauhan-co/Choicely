@@ -6,6 +6,7 @@ import {
     timestamp,
     text,
     unique,
+    varchar,
 } from "drizzle-orm/pg-core";
 import { usersTable } from "./auth.schema.js";
 
@@ -46,14 +47,17 @@ export const votesTable = pgTable(
     "votes",
     {
         id: uuid("id").defaultRandom().primaryKey(),
-
-        userId: uuid("user_id")
-            .notNull()
-            .references(() => usersTable.id, { onDelete: "cascade" }),
         pollId: uuid("poll_id")
             .notNull()
-            .references(() => pollsTable.id, { onDelete: "cascade" }),
-        option: text("option").notNull(),
+            .references(() => pollsTable.id, { onDelete: "cascade" })
+            .notNull(),
+        option: text("option").array().notNull(),
+
+        userId: uuid("user_id").references(() => usersTable.id, {
+            onDelete: "set null",
+        }),
+        userIp: varchar("guest_fingerprint", { length: 64 }),
+
         createdAt: timestamp("created_at").defaultNow().notNull(),
     },
     (table) => [unique("user_poll_unique_vote").on(table.userId, table.pollId)],

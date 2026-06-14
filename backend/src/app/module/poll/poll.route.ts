@@ -2,7 +2,7 @@ import express, { type Router } from "express";
 import pollController from "./poll.controller.js";
 import { validate } from "../../common/middleware/validate.js";
 import { createPollModel, updatePollModel } from "./poll.model.js";
-import { authenticate } from "../auth/auth.middleware.js";
+import { authenticate, optionalAuthenticate } from "../auth/auth.middleware.js";
 
 const router: Router = express.Router();
 
@@ -14,7 +14,7 @@ router.get("/profile", authenticate, pollController.pollProfile);
 
 router.get("/:id", pollController.getPollById);
 
-router.post("/:id/vote", authenticate, pollController.vote);
+router.post("/:id/vote", optionalAuthenticate, pollController.vote);
 
 router.post(
     "/create",
@@ -30,6 +30,6 @@ router.patch(
     pollController.updatePoll,
 );
 
-router.post("/delete/:id", authenticate, pollController.deletePoll);
+router.delete("/delete/:id", authenticate, pollController.deletePoll);
 
 export default router;

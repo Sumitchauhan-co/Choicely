@@ -11,6 +11,8 @@ import {
     Globe,
     Lock,
     Tag,
+    CheckSquare,
+    Square,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -55,6 +57,7 @@ export default function CreatePoll() {
             options: ["", ""],
             expiresAt: INITIAL_DEFAULT_EXPIRY,
             isPublic: true,
+            allowMultipleVotes: false, // Added to defaultValues state management frame
         },
         onSubmit: async ({ value }) => {
             const cleanOptions = value.options
@@ -81,7 +84,7 @@ export default function CreatePoll() {
                         : undefined,
                     isPublic: value.isPublic,
                     isActive: true,
-                    allowMultipleVotes: false,
+                    allowMultipleVotes: value.allowMultipleVotes, // Wired dynamic state to payload mutation
                 }),
                 {
                     loading: "Creating your poll...",
@@ -245,8 +248,6 @@ export default function CreatePoll() {
                             </div>
                         )}
                     </form.Field>
-
-                    {/* New Poll Name Field Entry */}
 
                     <div className="space-y-3">
                         <form.Field
@@ -601,6 +602,46 @@ export default function CreatePoll() {
                                         ? "Anyone on the global web stream network can find and answer this poll entry."
                                         : "Only users explicitly holding the target URL signature index can cast votes."}
                                 </p>
+                            </div>
+                        )}
+                    </form.Field>
+
+                    <form.Field name="allowMultipleVotes">
+                        {field => (
+                            <div className="space-y-2 pt-2">
+                                <label className="text-foreground/90 block text-sm font-semibold tracking-wide">
+                                    Voting Permissions
+                                </label>
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        field.handleChange(!field.state.value)
+                                    }
+                                    className={`group flex w-full max-w-xs cursor-pointer items-center gap-3 rounded-xl border p-3 text-left transition-all duration-200 select-none sm:max-w-md ${
+                                        field.state.value
+                                            ? "bg-primary/5 border-primary/40 text-foreground"
+                                            : "bg-secondary border-border/80 text-muted-foreground hover:text-foreground"
+                                    }`}
+                                >
+                                    <div className="shrink-0 transition-transform group-active:scale-95">
+                                        {field.state.value ? (
+                                            <CheckSquare className="text-primary h-5 w-5" />
+                                        ) : (
+                                            <Square className="h-5 w-5" />
+                                        )}
+                                    </div>
+                                    <div className="space-y-0.5">
+                                        <p className="text-foreground text-sm leading-none font-medium">
+                                            Allow Multi-Selection Voting
+                                        </p>
+                                        <p className="text-muted-foreground text-[11px] leading-tight">
+                                            {field.state.value
+                                                ? "Users can check and submit multiple options concurrently."
+                                                : "Standard competitive cap. Strictly one record choice entry per voter context."}
+                                        </p>
+                                    </div>
+                                </button>
                             </div>
                         )}
                     </form.Field>

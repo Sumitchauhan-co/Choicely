@@ -12,6 +12,7 @@ import {
     Copy,
     Trash2,
     Tag,
+    RotateCw,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -28,10 +29,25 @@ import {
 import { usePollSocket } from "@/hooks/usePoll";
 
 export default function DashboardPolls() {
-    const { data: myPolls, isLoading } = useUserCreatedPolls();
+    // 💡 Fetching refetch handler utilities from TanStack context query array
+    const {
+        data: myPolls,
+        isLoading,
+        refetch,
+        isRefetching,
+    } = useUserCreatedPolls();
     const updatePollMutation = useUpdatePoll();
     const deletePollMutation = useDeletePoll();
     const [selectedPoll, setSelectedPoll] = useState<Poll | null>(null);
+
+    const handleSyncRefresh = async () => {
+        try {
+            await refetch();
+            toast.success("Poll configuration metrics synchronized.");
+        } catch {
+            toast.error("Failed to refresh live rooms.");
+        }
+    };
 
     if (isLoading) {
         return (
@@ -46,14 +62,29 @@ export default function DashboardPolls() {
 
     return (
         <section className="animate-in fade-in space-y-6 duration-200">
-            <div>
-                <h2 className="text-xl font-bold tracking-tight">
-                    Poll Configuration
-                </h2>
-                <p className="text-muted-foreground mt-0.5 text-xs">
-                    Edit questions, scopes, and target boundaries for live
-                    rooms.
-                </p>
+            {/* 💡 Updated Header with right-aligned floating refresh button */}
+            <div className="flex items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-xl font-bold tracking-tight">
+                        Poll Configuration
+                    </h2>
+                    <p className="text-muted-foreground mt-0.5 text-xs">
+                        Edit questions, scopes, and target boundaries for live
+                        rooms.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    disabled={isRefetching}
+                    onClick={handleSyncRefresh}
+                    title="Refresh data metrics"
+                    className="text-muted-foreground hover:text-foreground hover:bg-muted/80 border-border/60 focus-visible:ring-ring/30 bg-card inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border transition-all duration-200 focus-visible:ring-2 focus-visible:outline-hidden active:scale-95 disabled:opacity-50"
+                >
+                    <RotateCw
+                        className={`h-4 w-4 ${isRefetching ? "text-primary animate-spin" : ""}`}
+                    />
+                </button>
             </div>
 
             {!myPolls || myPolls.length === 0 ? (
@@ -144,12 +175,10 @@ function PollTableRow({
                     : "hover:bg-muted/20"
             }`}
         >
-            {/* Column 1: S.No. identifier */}
             <td className="text-muted-foreground/70 p-4 text-center font-mono text-[11px] font-bold">
                 {serialNumber}
             </td>
 
-            {/* Column 2: Completely distinct Poll Name column */}
             <td className="p-4 whitespace-nowrap">
                 {poll.name ? (
                     <div className="text-primary dark:text-primary/90 bg-primary/5 border-primary/10 shadow-3xs inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-sans font-bold">
@@ -165,7 +194,6 @@ function PollTableRow({
                 )}
             </td>
 
-            {/* Column 3: Dedicated Poll Question column */}
             <td className="max-w-xs p-4 sm:max-w-md">
                 <div
                     className={`text-foreground truncate font-semibold ${

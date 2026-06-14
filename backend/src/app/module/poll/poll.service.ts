@@ -120,9 +120,14 @@ export const deletePollService = async (pollId: string, userId: string) => {
 
 export const voteService = async (
     pollId: string,
-    option: string,
-    userId: string,
+    option: string[],
+    userId: string | undefined,
+    userIp: string | undefined,
 ) => {
+    if (!option || !Array.isArray(option) || option.length === 0) {
+        throw apiError.badRequest("You must select at least one option choice");
+    }
+
     const [targetPoll] = await db
         .select()
         .from(pollsTable)
@@ -133,6 +138,12 @@ export const voteService = async (
         throw apiError.badRequest(`Target poll entry not found`);
     }
 
+    if (option.length > 1 && !targetPoll.allowMultipleVotes) {
+        throw apiError.badRequest(
+            "This poll does not allow multi-selection voting",
+        );
+    }
+
     if (
         targetPoll.expiresAt &&
         new Date(targetPoll.expiresAt).getTime() <= Date.now()
@@ -140,13 +151,35 @@ export const voteService = async (
         throw apiError.badRequest(`This poll context has closed and expired!`);
     }
 
-    const [existingVote] = await db
-        .select()
-        .from(votesTable)
-        .where(
-            and(eq(votesTable.userId, userId), eq(votesTable.pollId, pollId)),
-        )
-        .limit(1);
+    let existingVote;
+
+    if (!userId) {
+        if (!userIp) {
+            throw apiError.unauthorized("Unauthorised access to poll");
+        }
+
+        [existingVote] = await db
+            .select()
+            .from(votesTable)
+            .where(
+                and(
+                    eq(votesTable.userIp, userIp),
+                    eq(votesTable.pollId, pollId),
+                ),
+            )
+            .limit(1);
+    } else {
+        [existingVote] = await db
+            .select()
+            .from(votesTable)
+            .where(
+                and(
+                    eq(votesTable.userId, userId),
+                    eq(votesTable.pollId, pollId),
+                ),
+            )
+            .limit(1);
+    }
 
     if (existingVote) {
         throw apiError.badRequest(
@@ -156,20 +189,23 @@ export const voteService = async (
 
     const pollOptions = targetPoll.options as string[];
 
-    const isValidOption =
-        pollOptions.includes(option) ||
-        (!isNaN(Number(option)) &&
-            Number(option) >= 0 &&
-            Number(option) < pollOptions.length);
+    for (const singleOption of option) {
+        const isValidOption =
+            pollOptions.includes(singleOption) ||
+            (!isNaN(Number(singleOption)) &&
+                Number(singleOption) >= 0 &&
+                Number(singleOption) < pollOptions.length);
 
-    if (!isValidOption) {
-        throw apiError.badRequest(
-            `Provided option selection does not match this poll`,
-        );
+        if (!isValidOption) {
+            throw apiError.badRequest(
+                `Provided option selection "${singleOption}" does not match this poll`,
+            );
+        }
     }
 
     await db.insert(votesTable).values({
         userId,
+        userIp,
         pollId,
         option,
     });

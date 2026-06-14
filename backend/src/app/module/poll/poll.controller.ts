@@ -116,6 +116,7 @@ const updatePoll = async (req: Request, res: Response) => {
 
 const deletePoll = async (req: Request, res: Response) => {
     const id = req.params.id;
+    console.log(id);
 
     const userId = req.user?.id;
 
@@ -141,19 +142,17 @@ const vote = async (req: Request, res: Response) => {
     const { option } = req.body;
     const userId = req.user?.id;
 
+    let userIp = req.ip || req.headers["x-forwarded-for"]?.toString();
+
     if (!id || Array.isArray(id)) {
         throw apiError.badRequest("Invalid request");
-    }
-
-    if (!userId) {
-        throw apiError.unauthorized("Unauthorised access to poll");
     }
 
     if (!option) {
         throw apiError.notFound("Option id missing");
     }
 
-    await voteService(id, option, userId);
+    await voteService(id, option, userId, userIp);
 
     return apiResponse.ok(res, "Vote cataloged successfully");
 };

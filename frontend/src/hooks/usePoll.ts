@@ -163,7 +163,10 @@ export function useDeletePoll() {
 
     return useMutation({
         mutationFn: async ({ pollId }: { pollId: string }) => {
-            return await api.delete(`/api/poll/delete/${pollId}`);
+            const res = await api.delete(`/api/poll/delete/${pollId}`);
+            console.log(res);
+
+            return res;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["user-polls"] });
@@ -178,7 +181,7 @@ export function useDeletePoll() {
 
 export interface CastVotePayload {
     pollId: string;
-    option: string;
+    option: string[];
 }
 
 interface UseCastVoteOptions {
@@ -193,6 +196,7 @@ export function useCastVote(options?: UseCastVoteOptions) {
     return useMutation({
         mutationFn: async ({ pollId, option }: CastVotePayload) => {
             const toastId = toast.loading("Recording your vote...");
+            console.log(option);
 
             try {
                 const res = await api.post(`/api/poll/${pollId}/vote`, {

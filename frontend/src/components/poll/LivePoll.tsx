@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { useParams, Link } from "@tanstack/react-router";
+import { isAxiosError } from "axios";
 import {
     BarChart3,
     Clock,
@@ -26,30 +27,50 @@ export default function LivePoll() {
     } = useGetPollById(pollId);
     const { liveMetrics } = usePollSocket(pollId);
 
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [hasVoted, setHasVoted] = useState(false);
 
     const totalVotes = liveMetrics ? liveMetrics.totalVotes : 0;
 
-    const { mutate: castVote } = useCastVote({
-        onSuccess: () => {
-            setHasVoted(true);
-        },
-        onSettled: () => {
-            setIsSubmitting(false);
-        },
-    });
+    const { mutateAsync: castVoteAsync } = useCastVote();
 
-    const handleVoteSubmission = () => {
-        if (!selectedOption) {
-            toast.error("Please choose an option first!");
+    const handleOptionClick = (optionText: string) => {
+        if (!poll) return;
+
+        if (poll.allowMultipleVotes) {
+            setSelectedOptions(prev =>
+                prev.includes(optionText)
+                    ? prev.filter(item => item !== optionText)
+                    : [...prev, optionText]
+            );
+        } else {
+            setSelectedOptions([optionText]);
+        }
+    };
+
+    const handleVoteSubmission = async () => {
+        if (selectedOptions.length === 0) {
+            toast.error("Please choose at least one option first!");
             return;
         }
 
         setIsSubmitting(true);
 
-        castVote({ pollId, option: selectedOption });
+        try {
+            await castVoteAsync({ pollId, option: selectedOptions });
+
+            setHasVoted(true);
+        } catch (err) {
+            if (isAxiosError(err)) {
+                throw (
+                    err.response?.data?.message ||
+                    "An unexpected issue occurred while saving your vote."
+                );
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const getVotesForOption = (optionText: string) => {
@@ -72,7 +93,6 @@ export default function LivePoll() {
         );
     }
 
-    // Error State
     if (queryError || !poll) {
         return (
             <div className="border-destructive/30 bg-destructive/5 mx-auto my-12 max-w-md rounded-xl border border-dashed p-8 text-center">
@@ -108,7 +128,8 @@ export default function LivePoll() {
                         <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-amber-600 dark:text-amber-400">
                             <Clock className="h-3.5 w-3.5" />
                             <span className="font-sans">
-                                Live Interaction Room
+                                Live Interaction Room{" "}
+                                {poll.allowMultipleVotes && "(Multi-Selection)"}
                             </span>
                         </div>
                         <div className="bg-secondary text-secondary-foreground border-border/60 inline-flex max-w-[180px] items-center gap-1.5 rounded-md border px-2.5 py-1 sm:max-w-[240px]">
@@ -133,7 +154,7 @@ export default function LivePoll() {
                                     ? Math.round((voteCount / totalVotes) * 100)
                                     : 0;
                             const isCurrentSelection =
-                                selectedOption === optionText;
+                                selectedOptions.includes(optionText);
 
                             return (
                                 <button
@@ -141,7 +162,7 @@ export default function LivePoll() {
                                     type="button"
                                     disabled={hasVoted || isSubmitting}
                                     onClick={() =>
-                                        setSelectedOption(optionText)
+                                        handleOptionClick(optionText)
                                     }
                                     className={`group relative w-full cursor-pointer overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 focus-visible:outline-hidden active:scale-[0.99] ${
                                         isCurrentSelection
@@ -159,16 +180,26 @@ export default function LivePoll() {
 
                                     <div className="relative flex items-center justify-between gap-4 text-sm font-medium">
                                         <div className="flex items-center gap-3 truncate">
-                                            {/* Custom Radio/Check Circle Indicators */}
+                                            {/* Custom Checkbox/Radio UI Indicators based on allowMultipleVotes config */}
                                             <div
-                                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                                                className={`flex h-4 w-4 shrink-0 items-center justify-center border transition-colors ${
+                                                    poll.allowMultipleVotes
+                                                        ? "rounded-md"
+                                                        : "rounded-full"
+                                                } ${
                                                     isCurrentSelection
                                                         ? "border-primary bg-primary"
                                                         : "border-muted-foreground/40"
                                                 }`}
                                             >
                                                 {isCurrentSelection && (
-                                                    <div className="bg-primary-foreground h-1.5 w-1.5 rounded-full" />
+                                                    <div
+                                                        className={`bg-primary-foreground ${
+                                                            poll.allowMultipleVotes
+                                                                ? "h-1 w-2 translate-y-[-1px] rotate-[-45deg] border-b-2 border-l-2 bg-transparent"
+                                                                : "h-1.5 w-1.5 rounded-full"
+                                                        }`}
+                                                    />
                                                 )}
                                             </div>
                                             <span className="text-foreground/80 group-hover:text-foreground truncate font-sans transition-colors">
@@ -192,14 +223,16 @@ export default function LivePoll() {
                     {!hasVoted ? (
                         <button
                             type="button"
-                            disabled={!selectedOption || isSubmitting}
+                            disabled={
+                                selectedOptions.length === 0 || isSubmitting
+                            }
                             onClick={handleVoteSubmission}
                             className="bg-primary text-primary-foreground inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl font-sans text-sm font-semibold tracking-tight shadow-sm transition-all hover:opacity-95 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-40"
                         >
                             {isSubmitting ? (
                                 <>
                                     <Loader2 className="h-4 w-4 animate-spin" />
-                                    Recording Choice...
+                                    Recording Choices...
                                 </>
                             ) : (
                                 "Cast Your Vote"

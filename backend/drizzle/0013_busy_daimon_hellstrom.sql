@@ -1,0 +1,1 @@
+ALTER TABLE "votes" ALTER COLUMN "option" SET DATA TYPE text[];

@@ -57,6 +57,58 @@ export const authenticate = async (
     }
 };
 
+export const optionalAuthenticate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+            return next();
+        }
+
+        const header = req.headers["authorization"];
+        if (!header || !header.startsWith("Bearer ")) {
+            return next();
+        }
+
+        const token = header.split(" ")[1];
+        if (!token) {
+            return next();
+        }
+
+        const decoded = (await verifyAccessToken(token)) as {
+            id: string;
+            role: "user" | "admin";
+        };
+
+        if (!decoded || !decoded.id) {
+            return next();
+        }
+
+        const [user] = await db
+            .select({
+                id: usersTable.id,
+                role: usersTable.role,
+            })
+            .from(usersTable)
+            .where(eq(usersTable.id, decoded.id));
+
+        if (!user) {
+            return next();
+        }
+
+        req.user = {
+            id: user.id,
+            role: user.role,
+        } as any;
+
+        return next();
+    } catch (error) {
+        return next();
+    }
+};
+
 export const forgotPasswordLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 3,
