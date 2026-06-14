@@ -1,1 +1,3 @@
-ALTER TABLE "votes" ALTER COLUMN "option" SET DATA TYPE text[];
+ALTER TABLE "votes" 
+ALTER COLUMN "option" TYPE text[] 
+USING ARRAY["option"];
