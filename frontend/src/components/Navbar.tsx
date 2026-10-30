@@ -4,10 +4,10 @@ import { useState } from "react";
 
 import { Link } from "@tanstack/react-router";
 import { Menu, X, Blocks, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 import { useSignout } from "../hooks/useAuth";
-import { AlertBanner } from "./home/ALertBanner";
+// import { AlertBanner } from "./home/ALertBanner";
 import { Button } from "./ui/button";
 
 import { useAuthStore } from "@/store/store";
@@ -23,17 +23,17 @@ const navItems = [
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isBannerVisible, setIsBannerVisible] = useState(true);
+    // const [isBannerVisible, setIsBannerVisible] = useState(true);
 
     const isAuthenticated = useAuthStore(state => state.isAuthenticated);
     const { mutate: signoutMutation, isPending } = useSignout();
 
-    const handleCloseBanner = () => {
-        setIsBannerVisible(false);
-        toast.warning("Server instances are currently paused.", {
-            description: "We are working to fix the issue as soon as possible.",
-        });
-    };
+    // const handleCloseBanner = () => {
+    //     setIsBannerVisible(false);
+    //     toast.warning("Server instances are currently paused.", {
+    //         description: "We are working to fix the issue as soon as possible.",
+    //     });
+    // };
 
     const handleSignout = () => {
         signoutMutation(undefined, {
@@ -44,13 +44,13 @@ export default function Navbar() {
 
     return (
         <header className="sticky top-0 z-50 w-full">
-            {isBannerVisible && (
+            {/* {isBannerVisible && (
                 <AlertBanner
                     message="The service is currently unavailable."
                     onClose={handleCloseBanner}
                     className="w-full rounded-none border-x-0 border-t-0"
                 />
-            )}
+            )} */}
 
             <div className="relative mx-auto w-full max-w-7xl px-4 py-2">
                 <nav className="bg-card text-card-foreground border-border relative z-50 flex w-full items-center justify-between rounded-full border px-4 py-2.5 shadow-md transition-colors duration-200 md:px-6">
