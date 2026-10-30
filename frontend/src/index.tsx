@@ -42,10 +42,14 @@ declare module "@tanstack/react-router" {
 function AppContent() {
     const { isLoading } = useUser();
 
-    if (isLoading) {
+    if (!isLoading) {
         return (
             <div className="bg-background text-foreground flex h-screen w-screen flex-col items-center justify-center">
                 <LoadingAnimation />
+                <p className="text-muted-foreground text-center text-sm">
+                    Just waking things up! We'll be ready to go in just a
+                    moment.
+                </p>
             </div>
         );
     }
